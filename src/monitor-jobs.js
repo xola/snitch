@@ -95,7 +95,7 @@ async function check() {
 }
 
 if (process.argv[2] === "start") {
-    const interval = process.argv[3] ?? 15;
+    const interval = process.argv[3] ?? 20;
     const expr = `*/${interval} * * * 1-5`; // */2 is every two minutes (see crontab.guru)
     console.log(`${now()} 🚀 Starting Cron Job for server health (${expr})`);
     check();
