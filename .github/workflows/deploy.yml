@@ -1,0 +1,49 @@
+name: Deploy
+
+on:
+    workflow_dispatch:
+        inputs:
+            environment:
+                description: The environment (lowercase)
+                required: true
+            branch:
+                description: Branch to deploy (defaults to the workflow ref)
+                required: false
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+    cancel-in-progress: true
+
+jobs:
+    deploy:
+        runs-on: ubuntu-24.04
+        env:
+            NODE_ENV: ${{ github.event.inputs.environment }}
+            # TODO: these must point at the CI account's deploy credentials, not the production
+            # account secrets used by other Xola serverless services (e.g. miami-zoo).
+            AWS_ACCESS_KEY_ID: ${{ vars.CI_DEPLOY_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_DEPLOY_AWS_SECRET_ACCESS_KEY }}
+            ENCRYPTION_PRIVATE_KEY: ${{ secrets.ENCRYPTION_PRIVATE_KEY }}
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: ${{ github.event.inputs.branch || github.ref }}
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: ".nvmrc"
+                  cache: "npm"
+
+            - name: Install dependencies
+              run: npm ci --prefer-offline --no-audit
+
+            - name: Decrypt secrets
+              run: node scripts/crypt.js decrypt
+
+            - name: Create domain
+              run: npx serverless create_domain --stage=${{ github.event.inputs.environment }}
+              continue-on-error: true
+
+            - name: Deploy to ${{ github.event.inputs.environment }}
+              run: npx serverless deploy --stage=${{ github.event.inputs.environment }}

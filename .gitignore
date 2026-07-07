@@ -1,3 +1,16 @@
 .vscode
 node_modules
 config/local.json
+
+# Local, plain-text per-environment secrets - never commit these
+config/local-*.json
+
+# Encrypted versions of local config ARE safe to commit
+!config/local-*.json.encrypted
+!config/local-*.json.encrypted.key
+
+# Private keys used by scripts/crypt.js
+*.pem
+
+# Serverless Framework build artifacts
+.serverless
