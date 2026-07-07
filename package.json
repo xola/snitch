@@ -8,6 +8,7 @@
         "monitor-jobs": "node src/monitor-jobs.js start",
         "monitor-agents": "node src/monitor-elastic-agents.js start",
         "dev": "nodemon --delay 3 --watch src src/index.js",
+        "offline": "IS_SERVERLESS=true npx serverless offline",
         "format": "prettier -l --write src"
     },
     "dependencies": {
@@ -22,11 +23,16 @@
         "junit-viewer": "^4.11.1",
         "lodash-es": "^4.17.21",
         "md5": "^2.3.0",
+        "serverless-http": "^4.0.0",
         "slack-notify": "^2.0.7"
     },
     "devDependencies": {
         "nodemon": "^3.1.4",
-        "prettier": "^3.3.3"
+        "picocolors": "^1.1.1",
+        "prettier": "^3.3.3",
+        "serverless": "^4.37.0",
+        "serverless-domain-manager": "^10.2.0",
+        "serverless-offline": "^14.7.2"
     },
     "prettier": {
         "semi": true,

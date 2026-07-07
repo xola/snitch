@@ -94,6 +94,10 @@ async function check() {
     console.log();
 }
 
+export const handler = async () => {
+    await check();
+};
+
 if (process.argv[2] === "start") {
     const interval = process.argv[3] ?? 20;
     const expr = `*/${interval} * * * 1-5`; // */2 is every two minutes (see crontab.guru)
@@ -101,6 +105,6 @@ if (process.argv[2] === "start") {
     check();
     const job = new CronJob(expr, check);
     job.start();
-} else {
+} else if (!process.env.IS_SERVERLESS) {
     check();
 }

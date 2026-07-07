@@ -2,6 +2,7 @@ import Bolt from "@slack/bolt";
 import config from "config";
 import { json } from "express";
 import { isEmpty } from "lodash-es";
+import serverless from "serverless-http";
 
 import AgentHandler from "./handlers/AgentHandler.js";
 import PipelineUpdateHandler from "./handlers/PipelineUpdateHandler.js";
@@ -89,6 +90,17 @@ receiver.router.post("/api/actions", json(), async (request, response) => {
     console.log(request.body);
 });
 
-app.start(config.get("port")).then(() => {
-    console.log(`🚀 Snitch started on port ${config.get("port")} GoCD ${go.url} Node ${process.version}`);
-});
+if (!process.env.IS_SERVERLESS) {
+    app.start(config.get("port")).then(() => {
+        console.log(`🚀 Snitch started on port ${config.get("port")} GoCD ${go.url} Node ${process.version}`);
+    });
+}
+
+const appHandler = serverless(receiver.app);
+
+const handler = async (event, context) => {
+    context.callbackWaitsForEmptyEventLoop = false;
+    return appHandler(event, context);
+};
+
+export default handler;
