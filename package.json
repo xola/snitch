@@ -14,14 +14,14 @@
     "dependencies": {
         "@slack/bolt": "^3.3.0",
         "@slack/web-api": "^7.5.0",
-        "axios": "^1.7.7",
+        "axios": "^1.18.1",
         "chalk": "^5.3.0",
         "cheerio": "^1.0.0",
         "config": "^3.3.6",
         "cron": "^3.1.7",
         "dayjs": "^1.11.13",
         "junit-viewer": "^4.11.1",
-        "lodash-es": "^4.17.21",
+        "lodash-es": "^4.18.1",
         "md5": "^2.3.0",
         "serverless-http": "^4.0.0",
         "slack-notify": "^2.0.7"
@@ -33,6 +33,16 @@
         "serverless": "^4.37.0",
         "serverless-domain-manager": "^10.2.0",
         "serverless-offline": "^14.7.2"
+    },
+    "overrides": {
+        "brace-expansion@1": "^1.1.16",
+        "form-data@2": "^2.5.6",
+        "form-data@4": "^4.0.6",
+        "jws@3": "^3.2.3",
+        "minimatch@3": "^3.1.5",
+        "path-to-regexp@0.1": "^0.1.13",
+        "undici@6": "^6.28.0",
+        "ws@7": "^7.5.13"
     },
     "prettier": {
         "semi": true,
