@@ -17,7 +17,7 @@ package:
 custom:
     stage: ${opt:stage, "production"}
     domains:
-        production: snitch-serverless.ci.xola.com
+        production: snitch.ci.xola.com
     customDomain:
         basePath: ""
         domainName: ${self:custom.domains.${self:custom.stage}, "localhost"}
